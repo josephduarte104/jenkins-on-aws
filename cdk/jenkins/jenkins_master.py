@@ -7,6 +7,7 @@ from aws_cdk import (
     aws_iam as iam,
     aws_logs as logs,
     aws_elasticloadbalancingv2 as elb,
+    aws_efs as efs,
     core
 )
 
@@ -140,14 +141,6 @@ class JenkinsMaster(core.Stack):
                     )
                 ]
             )
-
-            self.jenkins_master_service.cluster.add_capacity(
-                "Ec2",
-                instance_type=ec2.InstanceType("t3.xlarge"),
-                key_name="jenkinsonaws",
-            )
-
-            # TODO: Add EFS if EC2 enabled
 
         # Opening port 5000 for master <--> worker communications
         self.jenkins_master_service.task_definition.default_container.add_port_mappings(
